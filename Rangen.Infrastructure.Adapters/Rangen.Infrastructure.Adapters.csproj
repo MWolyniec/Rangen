@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Random.Org" Version="0.1.4759.19552" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Rangen.Entities.RangenCore\Rangen.Entities.RangenCore.csproj" />
   </ItemGroup>
 
