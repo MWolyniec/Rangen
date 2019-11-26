@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rangen.Entities.PlainObjects\Rangen.Entities.PlainObjects.csproj" />
+    <ProjectReference Include="..\Rangen.Entities.RangenCore\Rangen.Entities.RangenCore.csproj" />
+  </ItemGroup>
+
+</Project>

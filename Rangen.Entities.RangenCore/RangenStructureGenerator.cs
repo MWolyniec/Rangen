@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace Rangen.Entities.RangenCore
 {
-    public class RangenCore<T>
+    public class RangenStructureGenerator<T>
     {
         private readonly IRandomNumbersGenerator randomNumbersGenerator;
 
-        public RangenCore(IRandomNumbersGenerator randomNumbersGenerator)
+        public RangenStructureGenerator(IRandomNumbersGenerator randomNumbersGenerator)
         {
             this.randomNumbersGenerator = randomNumbersGenerator;
         }
@@ -33,7 +33,7 @@ namespace Rangen.Entities.RangenCore
         /// 
         public async Task<Node<T>> GenerateStructureAsync
             (T mainItem, List<T> mainItemPool, ushort structureMinimumItemAmount = 1, ushort structureMaximumItemAmount = 0,
-            byte subbranchingChance = 50, byte dryoutFactor = 34)
+            byte subbranchingChance = 50, byte dryoutFactor = 34, bool distinctItems = false)
         {
             if (dryoutFactor > 100) dryoutFactor = 100;
 
@@ -44,21 +44,26 @@ namespace Rangen.Entities.RangenCore
 
             var mainNode = new Node<T>(mainItem);
 
-            // iteration tools
             List<T> itemPool = await CreateItemPoolAsync(mainItemPool, structureMinimumItemAmount, structureMaximumItemAmount);
             var nodeList = new List<Node<T>>();
 
-            //first node
             nodeList.Add(mainNode);
 
             for (int i = 0; i < itemPool.Count; i++)
             {
                 if (nodeList.Count == 0) break;
 
-
                 ushort randomNodeIndex = (ushort)await randomNumbersGenerator.GetRandomNumberBetweenAsync(0, nodeList.Count);
                 var node = nodeList[randomNodeIndex];
-                var newNode = new Node<T>(itemPool[i]);
+
+                int itemIndex;
+
+                if (distinctItems)
+                    itemIndex = i;
+                else
+                    itemIndex = await randomNumbersGenerator.GetRandomNumberBetweenAsync(0, itemPool.Count);
+
+                var newNode = new Node<T>(itemPool[itemIndex]);
                 Node<T> nodeToBranch;
 
                 int branchesCount = node.Branches.Count;
@@ -66,14 +71,14 @@ namespace Rangen.Entities.RangenCore
                 if (subbranch && branchesCount > 0)
                 {
                     int toSkip = await randomNumbersGenerator.GetRandomNumberBetweenAsync(0, branchesCount);
-                    nodeToBranch = node.Branches.Skip(toSkip).Take(1).First().Value;
+                    nodeToBranch = node.Branches.Skip(toSkip).Take(1).First();
                 }
                 else
                 {
                     nodeToBranch = node;
                 }
 
-                nodeToBranch.Branches.Add(i.ToString(), newNode);
+                nodeToBranch.Branches.Add(newNode);
                 nodeList.Add(newNode);
 
                 if (node.DryoutFactor < 100)
@@ -88,7 +93,7 @@ namespace Rangen.Entities.RangenCore
         }
 
 
-        private async Task<List<T>> CreateItemPoolAsync(List<T> mainPool, int minimumAmount = 1, int maximumAmount = 0)
+        public async Task<List<T>> CreateItemPoolAsync(List<T> mainPool, int minimumAmount = 1, int maximumAmount = 0, bool distinct = false)
         {
             if (maximumAmount == 0)
                 maximumAmount = mainPool.Count;
@@ -97,9 +102,24 @@ namespace Rangen.Entities.RangenCore
 
             var itemPool = new List<T>();
 
+
+            int mainPoolItemIndex;
+            if (distinct)
+            {
+                if (maximumAmount > mainPool.Count) maximumAmount = mainPool.Count;
+            }
+
             for (int i = 0; i < amount; i++)
             {
-                int mainPoolItemIndex = await randomNumbersGenerator.GetRandomNumberBetweenAsync(1, mainPool.Count);
+
+                if (distinct)
+                {
+                    mainPoolItemIndex = i;
+                }
+                else
+                {
+                    mainPoolItemIndex = await randomNumbersGenerator.GetRandomNumberBetweenAsync(1, mainPool.Count);
+                }
                 itemPool.Add(mainPool[mainPoolItemIndex]);
             }
             return itemPool;

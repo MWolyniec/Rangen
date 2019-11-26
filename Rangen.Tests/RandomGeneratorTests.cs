@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Rangen.API.Tests
+namespace Rangen.Tests
 {
     public class RandomGeneratorTests
     {
@@ -18,7 +18,7 @@ namespace Rangen.API.Tests
         private List<TestItem> testItems;
         private IRandomNumbersGenerator randomNumbersGenerator;
 
-        private RangenCore<TestItem> rangen;
+        private RangenStructureGenerator<TestItem> rangen;
 
         private List<TestItem> randomItems;
 
@@ -28,7 +28,7 @@ namespace Rangen.API.Tests
             // fill the list of items
             testItems = new List<TestItem>();
 
-            for (int i = 0; i <= 1000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 testItems.Add(new TestItem()
                 {
@@ -39,7 +39,7 @@ namespace Rangen.API.Tests
 
             randomNumbersGenerator = new RandomNumbersGeneratorAdapter() { OnlineMode = false };
 
-            rangen = new RangenCore<TestItem>(randomNumbersGenerator);
+            rangen = new RangenStructureGenerator<TestItem>(randomNumbersGenerator);
         }
 
 
@@ -61,19 +61,19 @@ namespace Rangen.API.Tests
         }
 
         [Test]
-        public async Task CanGenerateStructureMadeOfGivenNumberOfItems()
+        public async Task CanGenerateStructureOfOnlyOneNodeAsync()
+        {
+            Node<TestItem> structure = await rangen.GenerateStructureAsync(new TestItem(), testItems, 1, 1, 50, 0).ConfigureAwait(false);
+            Assert.AreEqual(1, structure.CountAllSubnodes());
+        }
+        [Test]
+        public async Task CanGenerateStructureOfTwoNodesAsync()
         {
 
-            TestItem mainItem = await rangen.GetOneRandomItemAsync(testItems).ConfigureAwait(false);
-
-            Node<TestItem> structureMadeOf5Items = await rangen.GenerateStructureAsync(mainItem, testItems, 5, 5, 50, 0).ConfigureAwait(false);
-
-            Node<TestItem> structureMadeOf10Items = await rangen.GenerateStructureAsync(mainItem, testItems, 10, 10, 50, 0).ConfigureAwait(false);
-
-            Assert.IsTrue(structureMadeOf5Items.CountAllSubnodes() + 1 == 5);
-            Assert.IsTrue(structureMadeOf10Items.CountAllSubnodes() + 1 == 10);
-
+            Node<TestItem> structure = await rangen.GenerateStructureAsync(new TestItem(), testItems, 2, 2, 50, 0).ConfigureAwait(false);
+            Assert.AreEqual(2, structure.CountAllSubnodes());
         }
+
 
 
         [Test]
@@ -86,9 +86,71 @@ namespace Rangen.API.Tests
 
             int allBranchesCount = generatedStructure.CountAllSubnodes();
 
+
+
             Assert.True(allBranchesCount > 1);
         }
 
-        //generatedStructure.BranchesCount > 0 && generatedStructure.StructureDepth > 0
+
+        [Test]
+        public async Task CanGenerateStructureMadeOfGivenNumberOfItemsAsync()
+        {
+
+            TestItem mainItem = await rangen.GetOneRandomItemAsync(testItems).ConfigureAwait(false);
+
+            Node<TestItem> structureMadeOf5Items = await rangen.GenerateStructureAsync(mainItem, testItems, 5, 5, 50, 0).ConfigureAwait(false);
+
+            Node<TestItem> structureMadeOf10Items = await rangen.GenerateStructureAsync(mainItem, testItems, 10, 10, 50, 0).ConfigureAwait(false);
+
+            Assert.AreEqual(5, structureMadeOf5Items.CountAllSubnodes());
+            Assert.AreEqual(10, structureMadeOf10Items.CountAllSubnodes());
+
+        }
+        [Test]
+        public async Task CanGenerateStructureMadeOfDistinctItemsAsync()
+        {
+            ushort testAmount = 900;
+
+            Node<TestItem> structure = await rangen.GenerateStructureAsync(new TestItem(), testItems, testAmount, testAmount, 50, 0).ConfigureAwait(false);
+            int distinctItemsCount = structure.ListAllSubnodes().Distinct().Count();
+            Assert.AreEqual(testAmount, distinctItemsCount);
+        }
+
+        [Test]
+        public async Task CanListAllSubnodesAsync()
+        {
+
+            ushort testamount = 1000;
+            TestItem mainItem = await rangen.GetOneRandomItemAsync(testItems).ConfigureAwait(false);
+
+            Node<TestItem> structure = await rangen.GenerateStructureAsync(mainItem, testItems, testamount, testamount, 50, 0, true).ConfigureAwait(false);
+
+            List<Node<TestItem>> subnodesList = structure.ListAllSubnodes();
+
+            Assert.AreEqual(1000, subnodesList.Count);
+        }
+
+        [Test]
+        public async Task CanPrepareTheItemPoolWithAnExactNumberOfItemsAsync()
+        {
+            var itempool = await rangen.CreateItemPoolAsync(testItems, 10, 10).ConfigureAwait(false);
+            Assert.AreEqual(10, itempool.Count);
+        }
+        [Test]
+        public async Task CanCreateLargerItemPoolThanTheGivenItemListViaMakingDuplicatesAsync()
+        {
+            var itempool = await rangen.CreateItemPoolAsync(testItems, 2000, 2000).ConfigureAwait(false);
+            Assert.AreEqual(2000, itempool.Count);
+        }
+
+        [Test]
+        public async Task CanCreateItemPoolMadeOfDistinctItemsAsync()
+        {
+            int testAmount = 900;
+
+            var itempool = await rangen.CreateItemPoolAsync(testItems, testAmount, testAmount, distinct: true).ConfigureAwait(false);
+            int distinctItemsCount = itempool.Distinct().Count();
+            Assert.AreEqual(testAmount, distinctItemsCount);
+        }
     }
 }

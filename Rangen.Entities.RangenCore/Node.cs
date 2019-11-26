@@ -6,7 +6,7 @@ namespace Rangen.Entities.RangenCore
     {
         public T MainItem { get; }
         public Node<T> CurrentBranch { get; }
-        public Dictionary<string, Node<T>> Branches { get; }
+        public List<Node<T>> Branches { get; }
 
         public byte DryoutFactor { get; set; }
 
@@ -14,27 +14,40 @@ namespace Rangen.Entities.RangenCore
         {
             CurrentBranch = currentBranch;
             MainItem = mainItem;
-            Branches = new Dictionary<string, Node<T>>();
+            Branches = new List<Node<T>>();
         }
 
         public Node(T mainItem)
         {
             MainItem = mainItem;
             CurrentBranch = this;
-            Branches = new Dictionary<string, Node<T>>();
+            Branches = new List<Node<T>>();
         }
 
         public int CountAllSubnodes()
         {
-            int subnodesCount = Branches.Count;
+            int subnodesCount = 0;
             if (Branches.Count > 0)
             {
+                subnodesCount = Branches.Count;
                 foreach (var branch in Branches)
                 {
-                    subnodesCount += CountAllSubnodes();
+                    subnodesCount += branch.CountAllSubnodes();
                 }
             }
             return subnodesCount;
+        }
+
+        public List<Node<T>> ListAllSubnodes()
+        {
+            List<Node<T>> subnodes = new List<Node<T>>();
+
+            foreach (var branch in Branches)
+            {
+                subnodes.Add(branch);
+                subnodes.AddRange(branch.ListAllSubnodes());
+            }
+            return subnodes;
         }
     }
 }

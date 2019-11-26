@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Rangen.API.Core.Entities
+﻿namespace Rangen.Entities.POCO
 {
-    public class Item : BaseItem
+    public abstract class Item
     {
-        private object name;
-        private object description;
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Id { get; set; }
 
-        public Item(object name, object description)
+        public Item(string name, string description)
         {
-            this.name = name;
-            this.description = description;
+            this.Name = name;
+            this.Description = description;
         }
-
-        public long Id { get; set; }
-        public ICollection<Item> Parents { get; set; }
-        public ICollection<Item> Children { get; set; }
     }
 }
