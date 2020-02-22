@@ -1,4 +1,4 @@
-﻿using Rangen.Entities.RangenCore;
+﻿using Rangen.Core.Generator;
 using System;
 using System.Threading.Tasks;
 
