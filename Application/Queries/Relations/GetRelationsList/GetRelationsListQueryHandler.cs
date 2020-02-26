@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Rangen.Application.Common.Interfaces;
-using Rangen.Application.Queries.Common;
+using Rangen.Application.Queries.Relations.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rangen.Application.Queries.GetRelationsList
+namespace Rangen.Application.Queries.Relations.GetRelationsList
 {
     public class GetRelationsListQueryHandler : GetItemListQueryHandler<RelationDto>
     {

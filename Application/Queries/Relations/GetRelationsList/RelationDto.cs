@@ -1,7 +1,7 @@
-﻿using Rangen.Application.Queries.Common;
-using Rangen.Application.Queries.GetRelationTypesList;
+﻿using Rangen.Application.Queries.Relations.Common;
+using Rangen.Application.Queries.Relations.GetRelationTypesList;
 
-namespace Rangen.Application.Queries.GetRelationsList
+namespace Rangen.Application.Queries.Relations.GetRelationsList
 {
     public class RelationDto : ItemDto
     {

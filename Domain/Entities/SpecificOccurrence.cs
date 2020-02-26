@@ -1,5 +1,4 @@
 ﻿using Rangen.Domain.Common;
-using System.Collections.Generic;
 
 namespace Rangen.Domain.Entities
 {
@@ -15,9 +14,6 @@ namespace Rangen.Domain.Entities
         public GenericOccurrence OccurrenceType { get; set; }
 
         public byte DryoutFactor { get; set; }
-
-        public ICollection<Relation> GenericRelations { get; set; }
-
 
 
     }

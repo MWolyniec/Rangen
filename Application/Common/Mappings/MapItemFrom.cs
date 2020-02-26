@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Rangen.Application.Queries.Common;
+using Rangen.Application.Queries.Relations.Common;
 using Rangen.Domain.Common;
 
 namespace Rangen.Application.Common.Mappings

@@ -1,8 +1,8 @@
-﻿using Rangen.Application.Queries.Common;
-using Rangen.Application.Queries.GetCategoryTypesList;
-using Rangen.Application.Queries.GetGenericOccurrencesList;
+﻿using Rangen.Application.Queries.Relations.Common;
+using Rangen.Application.Queries.Relations.GetCategoryTypesList;
+using Rangen.Application.Queries.Relations.GetGenericOccurrencesList;
 
-namespace Rangen.Application.Queries.GetCategoriesList
+namespace Rangen.Application.Queries.Relations.GetCategoriesList
 {
     public class CategoryDto : OccurrenceDto
     {

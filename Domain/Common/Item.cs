@@ -2,7 +2,7 @@
 
 namespace Rangen.Domain.Common
 {
-    public class Item
+    public abstract class Item
     {
 
         public Item(string name)
@@ -15,6 +15,6 @@ namespace Rangen.Domain.Common
         public string Description { get; set; }
 
 
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public ICollection<AdditionalDataObject> AdditionalData { get; set; }
     }
 }

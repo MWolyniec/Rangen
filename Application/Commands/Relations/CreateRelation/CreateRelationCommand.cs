@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Rangen.Application.Commands.Relations.CreateRelation
 {
-    public class CreateRelationCommand : IRequest
+    public class CreateRelationCommand : IRequest<int>
     {
 
 
@@ -32,16 +32,28 @@ namespace Rangen.Application.Commands.Relations.CreateRelation
 
         public IDictionary<string, object> AdditionalData { get; set; }
 
-        public class Handler : IRequestHandler<CreateRelationCommand>
+        public CreateRelationCommand(string name, int occurrence1Id, bool occurrence1IsGeneric,
+            int occurrence2Id, bool occurrence2IsGeneric, int relationTypeId)
+        {
+            this.Name = name;
+            this.Occurrence1Id = occurrence1Id;
+            this.Occurrence1IsGeneric = occurrence1IsGeneric;
+            this.Occurrence2Id = occurrence2Id;
+            this.Occurrence2IsGeneric = occurrence2IsGeneric;
+            this.RelationTypeId = relationTypeId;
+        }
+
+        public class Handler : IRequestHandler<CreateRelationCommand, int>
         {
 
             private readonly IRangenDbContext _context;
+
             public Handler(IRangenDbContext context)
             {
                 _context = context;
             }
 
-            public async Task<Unit> Handle(CreateRelationCommand request, CancellationToken cancellationToken)
+            public async Task<int> Handle(CreateRelationCommand request, CancellationToken cancellationToken)
             {
                 Occurrence occurrence1;
                 Occurrence occurrence2;
@@ -65,6 +77,8 @@ namespace Rangen.Application.Commands.Relations.CreateRelation
                 _ = occurrence2 ?? throw new ArgumentNullException(nameof(occurrence2));
                 _ = relationType ?? throw new ArgumentNullException(nameof(relationType));
 
+
+
                 var entity = new Relation(request.Name)
                 {
                     Description = request.Description,
@@ -81,9 +95,12 @@ namespace Rangen.Application.Commands.Relations.CreateRelation
 
                 _context.Relations.Add(entity);
 
+                entity.Occurrence1.Relations.Add(entity);
+                entity.Occurrence2.Relations.Add(entity);
+
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return Unit.Value;
+                return entity.Id;
             }
         }
     }

@@ -20,31 +20,41 @@ namespace Rangen.Application.UnitTests
 
             string testGenOcc = "Test Generic Occurrence ";
             context.GenericOccurrences.AddRange(new[] {
-                new GenericOccurrence(testGenOcc + "1") { Id = 1},
-            new GenericOccurrence(testGenOcc + "2"){ Id = 2},
-            new GenericOccurrence(testGenOcc + "3"){ Id = 3},
-            new GenericOccurrence(testGenOcc + "4"){ Id = 4},
-            new GenericOccurrence(testGenOcc + "5"){ Id = 5}
+                new GenericOccurrence(testGenOcc + "1"),
+            new GenericOccurrence(testGenOcc + "2"),
+            new GenericOccurrence(testGenOcc + "3"),
+            new GenericOccurrence(testGenOcc + "4"),
+            new GenericOccurrence(testGenOcc + "5")
             });
 
 
             string testSpecOcc = "Test Specific Occurrence ";
             context.SpecificOccurrences.AddRange(new[] {
-            new SpecificOccurrence(testSpecOcc + "1"){ Id = 1},
-            new SpecificOccurrence(testSpecOcc + "2") { Id = 2},
-            new SpecificOccurrence(testSpecOcc + "3") { Id = 3},
-            new SpecificOccurrence(testSpecOcc + "4") { Id = 4},
-            new SpecificOccurrence(testSpecOcc + "5") { Id = 5},
+            new SpecificOccurrence(testSpecOcc + "1"),
+            new SpecificOccurrence(testSpecOcc + "2"),
+            new SpecificOccurrence(testSpecOcc + "3") ,
+            new SpecificOccurrence(testSpecOcc + "4") ,
+            new SpecificOccurrence(testSpecOcc + "5"),
         });
 
 
             string testCat = "Test Category ";
             context.Categories.AddRange(new[] {
-            new Category(testCat + "1"){ Id = 1},
-            new Category(testCat + "2"){ Id = 2},
-            new Category(testCat + "3"){ Id = 3},
-            new Category(testCat + "4"){ Id = 4},
-            new Category(testCat + "5"){ Id = 5}
+            new Category(testCat + "1"),
+            new Category(testCat + "2"),
+            new Category(testCat + "3"),
+            new Category(testCat + "4"),
+            new Category(testCat + "5")
+            });
+
+
+            string testRelType = "Test Relation Type ";
+            context.RelationTypes.AddRange(new[] {
+            new RelationType(testRelType + "1"),
+            new RelationType(testRelType + "2"),
+            new RelationType(testRelType + "3"),
+            new RelationType(testRelType + "4"),
+            new RelationType(testRelType + "5")
             });
 
             context.SaveChanges();

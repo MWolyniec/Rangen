@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rangen.Application.Commands.UpsertCategory
+namespace Rangen.Application.Commands.CategoryTypes.UpsertCategoryType
 {
     public class UpsertCategoryTypeCommand : IRequest<int>
     {

@@ -7,7 +7,7 @@ using Rangen.Application.Common.Interfaces;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rangen.Application.Queries.Common
+namespace Rangen.Application.Queries.Relations.Common
 {
     public abstract class GetItemListQueryHandler<TDto> : IRequestHandler<GetItemListQuery<TDto>, ItemListVm<TDto>> where TDto : ItemDto
     {

@@ -1,7 +1,7 @@
-﻿using Rangen.Application.Queries.GetRelationsList;
+﻿using Rangen.Application.Queries.Relations.GetRelationsList;
 using System.Collections.Generic;
 
-namespace Rangen.Application.Queries.Common
+namespace Rangen.Application.Queries.Relations.Common
 {
     public class OccurrenceDto : ItemDto
     {

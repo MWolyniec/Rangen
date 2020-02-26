@@ -5,32 +5,32 @@ using Rangen.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rangen.Application.Commands.Delete
+namespace Rangen.Application.Commands.RelationTypes.Delete
 {
-    public class DeleteCategoryTypeCommand : IRequest
+    public class DeleteRelationTypeCommand : IRequest
     {
         public int Id { get; set; }
 
-        public class DeleteCategoryTypeCommandHandler : IRequestHandler<DeleteCategoryTypeCommand>
+        public class DeleteRelationTypeCommandHandler : IRequestHandler<DeleteRelationTypeCommand>
         {
             private readonly IRangenDbContext _context;
 
-            public DeleteCategoryTypeCommandHandler(IRangenDbContext context)
+            public DeleteRelationTypeCommandHandler(IRangenDbContext context)
             {
                 _context = context;
             }
 
-            public async Task<Unit> Handle(DeleteCategoryTypeCommand request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(DeleteRelationTypeCommand request, CancellationToken cancellationToken)
             {
-                var entity = await _context.CategoryTypes
+                var entity = await _context.RelationTypes
                     .FindAsync(request.Id);
 
                 if (entity == null)
                 {
-                    throw new NotFoundException(nameof(CategoryType), request.Id);
+                    throw new NotFoundException(nameof(RelationType), request.Id);
                 }
 
-                _context.CategoryTypes.Remove(entity);
+                _context.RelationTypes.Remove(entity);
 
                 await _context.SaveChangesAsync(cancellationToken);
 
