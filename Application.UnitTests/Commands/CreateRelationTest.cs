@@ -37,15 +37,15 @@ namespace Rangen.Application.UnitTests.Commands
 
 
             // Assert
-            var actual = await _context.Relations.FirstOrDefaultAsync(x => x.Id == resultId);
+            var actual = await _context.Relations.Include(d => d.Occurrence1).Include(o => o.Occurrence2).FirstOrDefaultAsync(x => x.Id == resultId);
 
             actual.Should().NotBeNull();
             actual.RelationType.Should().Be(relType);
-            actual.Occurrence1.Should().Be(occ1);
-            actual.Occurrence2.Should().Be(occ2);
+            actual.Occurrence1Id.Should().Be(occ1.Id);
+            actual.Occurrence2Id.Should().Be(occ2.Id);
 
-            actual.Occurrence1.Relations.Should().Contain(x => x.Id == resultId);
-            actual.Occurrence2.Relations.Should().Contain(x => x.Id == resultId);
+            actual.Occurrence1.RelationsAsOccurrence1.Should().Contain(x => x.Id == resultId);
+            actual.Occurrence2.RelationsAsOccurrence2.Should().Contain(x => x.Id == resultId);
         }
 
 

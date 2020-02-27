@@ -95,8 +95,8 @@ namespace Rangen.Application.Commands.Relations.CreateRelation
 
                 _context.Relations.Add(entity);
 
-                entity.Occurrence1.Relations.Add(entity);
-                entity.Occurrence2.Relations.Add(entity);
+                entity.Occurrence1.RelationsAsOccurrence1.Add(entity);
+                entity.Occurrence2.RelationsAsOccurrence2.Add(entity);
 
                 await _context.SaveChangesAsync(cancellationToken);
 

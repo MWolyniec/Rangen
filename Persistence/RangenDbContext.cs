@@ -58,21 +58,27 @@ namespace Rangen.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Relation>()
-                .HasOne(pt => pt.Occurrence2)
-                .WithMany()
-                .HasForeignKey(pt => pt.Occurrence2Id)
-                .OnDelete(DeleteBehavior.Restrict);
 
 
 
             modelBuilder.Entity<Relation>()
            .HasOne(pt => pt.Occurrence1)
-           .WithMany(p => p.Relations)
+           .WithMany(d => d.RelationsAsOccurrence1)
            .HasForeignKey(pt => pt.Occurrence1Id)
            .OnDelete(DeleteBehavior.Restrict);
 
 
+
+            modelBuilder.Entity<Relation>()
+                .HasOne(x => x.Occurrence2)
+                .WithMany(d => d.RelationsAsOccurrence2)
+                .HasForeignKey(pt => pt.Occurrence2Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+
+
+            modelBuilder.Entity<Relation>().HasKey(sc => new { sc.Occurrence1Id, sc.Occurrence2Id });
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(RangenDbContext).Assembly);
         }
