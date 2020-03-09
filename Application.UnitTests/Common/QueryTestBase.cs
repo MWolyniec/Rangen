@@ -5,26 +5,26 @@ using System;
 
 namespace Rangen.Application.UnitTests.Common
 {
-    public class QueryTestFixture : IDisposable
+    public class QueryTestBase : IDisposable
     {
-        public RangenDbContext Context { get; private set; }
-        public IMapper Mapper { get; private set; }
+        protected RangenDbContext _context { get; private set; }
+        protected IMapper _mapper { get; private set; }
 
-        public QueryTestFixture()
+        public QueryTestBase()
         {
-            Context = RangenContextFactory.Create();
+            _context = RangenContextFactory.Create();
 
             var configurationProvider = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<MappingProfile>();
             });
 
-            Mapper = configurationProvider.CreateMapper();
+            _mapper = configurationProvider.CreateMapper();
         }
 
         public void Dispose()
         {
-            RangenContextFactory.Destroy(Context);
+            RangenContextFactory.Destroy(_context);
         }
     }
 

@@ -1,11 +1,9 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Rangen.Application.Queries.Common;
 
-namespace Rangen.Application.Queries.Relations.Common
+namespace Rangen.Application.Queries.Common
 {
-    public class GetItemListQuery<TDto> : IRequest<ItemListVm<TDto>> where TDto : ItemDto
+    public class GetItemListQuery<TLookupDto> : IRequest<ItemListViewModel<TLookupDto>>
     {
     }
 }

@@ -30,7 +30,7 @@ namespace Rangen.Application.Commands.Relations.CreateRelation
         public float Occurrence1ChanceToOccurInTheRelation { get; set; }
         public float Occurrence2ChanceToOccurInTheRelation { get; set; }
 
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public HashSet<AdditionalDataObject> AdditionalData { get; set; }
 
         public CreateRelationCommand(string name, int occurrence1Id, bool occurrence1IsGeneric,
             int occurrence2Id, bool occurrence2IsGeneric, int relationTypeId)

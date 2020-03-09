@@ -2,6 +2,8 @@
 {
     public class AdditionalDataObject : Item
     {
+
+
         public int? Value1 { get; set; }
         public string Value1Name { get; set; }
 

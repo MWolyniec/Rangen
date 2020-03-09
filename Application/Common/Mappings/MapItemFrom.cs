@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Rangen.Application.Queries.Relations.Common;
+using Rangen.Application.Queries.Common;
+
 using Rangen.Domain.Common;
 
 namespace Rangen.Application.Common.Mappings
@@ -9,9 +10,8 @@ namespace Rangen.Application.Common.Mappings
 
         public virtual void Mapping(Profile profile)
         {
-            profile.CreateMap<Item, ItemDto>()
-                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
-                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name));
+            profile.CreateMap<Item, ItemVm>()
+                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id));
         }
     }
 }

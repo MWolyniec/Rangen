@@ -1,9 +1,9 @@
-﻿using MediatR;
-using Rangen.Application.Queries.Relations.Common;
+﻿using Rangen.Application.Queries.Common;
 
-namespace Rangen.Application.Queries.Relations.GetGenericOccurrencesList
+namespace Rangen.Application.Queries.GetGenericOccurrences
 {
-    public class GetGenericOccurrencesListQuery : IRequest<ItemListVm<GenericOccurrenceDto>>
+    public class GetGenericOccurrencesListQuery : GetItemListQuery<GenericOccurrenceLookupDto>
     {
+
     }
 }

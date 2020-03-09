@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Rangen.Application.Common.Interfaces;
+using Rangen.Domain.Common;
 using Rangen.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Rangen.Application.Commands.GenericOccurrences.CreateGenericOccurrence
 {
-    public class CreateGenericOccurrenceCommand : IRequest
+    public class CreateGenericOccurrenceCommand : IRequest<int>
     {
 
         public string Name { get; set; }
@@ -16,9 +17,14 @@ namespace Rangen.Application.Commands.GenericOccurrences.CreateGenericOccurrence
         public float GeneralChanceToOccur { get; set; }
 
         public ICollection<Relation> Relations { get; set; }
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public ICollection<AdditionalDataObject> AdditionalData { get; set; }
 
-        public class Handler : IRequestHandler<CreateGenericOccurrenceCommand>
+        public CreateGenericOccurrenceCommand(string name)
+        {
+            this.Name = name;
+        }
+
+        public class Handler : IRequestHandler<CreateGenericOccurrenceCommand, int>
         {
 
             private readonly IRangenDbContext _context;
@@ -28,7 +34,7 @@ namespace Rangen.Application.Commands.GenericOccurrences.CreateGenericOccurrence
                 _context = context;
             }
 
-            public async Task<Unit> Handle(CreateGenericOccurrenceCommand request, CancellationToken cancellationToken)
+            public async Task<int> Handle(CreateGenericOccurrenceCommand request, CancellationToken cancellationToken)
             {
 
 
@@ -38,12 +44,13 @@ namespace Rangen.Application.Commands.GenericOccurrences.CreateGenericOccurrence
 
                 _context.GenericOccurrences.Add(entity);
 
-                var entry = _context.Entry(entity);
-                entry.CurrentValues.SetValues(request);
+                _context.Entry(entity).CurrentValues.SetValues(request);
+
+                entity.AdditionalData = request.AdditionalData;
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return Unit.Value;
+                return entity.Id;
             }
         }
     }

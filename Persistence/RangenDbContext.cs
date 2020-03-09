@@ -59,7 +59,7 @@ namespace Rangen.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-
+            // modelBuilder.Entity<Occurrence>().HasMany(d => d.AdditionalData);
 
             modelBuilder.Entity<Relation>()
            .HasOne(pt => pt.Occurrence1)

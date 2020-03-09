@@ -14,7 +14,7 @@ namespace Rangen.Application.UnitTests.Commands
         public async Task Handle_GivenValidRequest_ShouldWorkAndAddRelationToBothOccurrencesRelationLists()
         {
             // Arrange
-            var sut = new CreateRelationCommand.Handler(_context);
+            var handler = new CreateRelationCommand.Handler(_context);
 
             var occurrence1Id = 1;
             var occurrence2Id = 2;
@@ -28,7 +28,7 @@ namespace Rangen.Application.UnitTests.Commands
 
 
             // Act
-            var resultId = await sut.Handle
+            var resultId = await handler.Handle
                 (
                 new CreateRelationCommand("Test Relation", occurrence1Id, true, occurrence2Id, true, relationTypeId),
             CancellationToken.None

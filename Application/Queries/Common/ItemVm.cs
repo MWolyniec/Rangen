@@ -1,13 +1,17 @@
-﻿using System;
+﻿using Rangen.Application.Common.Mappings;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rangen.Application.Queries.Relations.Common
+namespace Rangen.Application.Queries.Common
 {
-    public class ItemListVm<TDto> where TDto : ItemDto
+    public class ItemVm
     {
-        public IList<TDto> Items { get; set; }
+        public int Id { get; set; }
 
-        public int Count { get; set; }
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
     }
 }

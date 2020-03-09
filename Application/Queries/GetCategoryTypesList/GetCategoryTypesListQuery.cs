@@ -1,9 +1,8 @@
-﻿using MediatR;
-using Rangen.Application.Queries.Relations.Common;
+﻿using Rangen.Application.Queries.Common;
 
-namespace Rangen.Application.Queries.Relations.GetCategoryTypesList
+namespace Rangen.Application.Queries.GetCategoryTypesList
 {
-    public class GetCategoryTypesListQuery : IRequest<ItemListVm<CategoryTypeDto>>
+    public class GetCategoryTypesListQuery : GetItemListQuery<CategoryTypeLookupDto>
     {
     }
 }

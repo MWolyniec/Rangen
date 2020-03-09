@@ -24,7 +24,8 @@ namespace Rangen.Application.UnitTests
             new GenericOccurrence(testGenOcc + "2"),
             new GenericOccurrence(testGenOcc + "3"),
             new GenericOccurrence(testGenOcc + "4"),
-            new GenericOccurrence(testGenOcc + "5")
+            new GenericOccurrence(testGenOcc + "5"),
+            new GenericOccurrence(testGenOcc + "6")
             });
 
 
@@ -43,8 +44,7 @@ namespace Rangen.Application.UnitTests
             new Category(testCat + "1"),
             new Category(testCat + "2"),
             new Category(testCat + "3"),
-            new Category(testCat + "4"),
-            new Category(testCat + "5")
+            new Category(testCat + "4")
             });
 
 
@@ -52,9 +52,7 @@ namespace Rangen.Application.UnitTests
             context.RelationTypes.AddRange(new[] {
             new RelationType(testRelType + "1"),
             new RelationType(testRelType + "2"),
-            new RelationType(testRelType + "3"),
-            new RelationType(testRelType + "4"),
-            new RelationType(testRelType + "5")
+            new RelationType(testRelType + "3")
             });
 
             context.SaveChanges();
