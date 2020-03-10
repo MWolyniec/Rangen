@@ -1,11 +1,18 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using Rangen.Application.Commands.Categories.CreateCategory;
+using Rangen.Application.Commands.CategoryTypes.Upsert;
 using Rangen.Application.Commands.GenericOccurrences.CreateGenericOccurrence;
 using Rangen.Application.Commands.Relations.CreateRelation;
+using Rangen.Application.Commands.RelationTypes.Upsert;
 using Rangen.Application.Commands.SpecificOccurrences.CreateSpecificOccurrence;
+using Rangen.Application.Queries.GetCategories;
+using Rangen.Application.Queries.GetCategoryTypes;
 using Rangen.Application.Queries.GetGenericOccurrences;
+using Rangen.Application.Queries.GetRelationTypes;
 using Rangen.Domain.Common;
+using Rangen.Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -139,6 +146,150 @@ namespace Rangen.Application.UnitTests.Commands
 
             actual.Occurrence1.RelationsAsOccurrence1.Should().Contain(x => x.Id == resultId);
             actual.Occurrence2.RelationsAsOccurrence2.Should().Contain(x => x.Id == resultId);
+        }
+        [Test]
+
+        public async Task UpsertCategoryTypeHandle_GivenValidRequest_ShouldCreateNewEntity()
+        {
+            // Arrange
+            var handler = new UpsertCategoryTypeCommand.Handler(_context);
+
+            var name = "Test Relation Type";
+            var desc = "Just a test rel type";
+
+            var addDataName = "Test Data 2";
+            var val1Name = "Test Value 2";
+            var val1 = 20;
+
+            var addData = new AdditionalDataObject(addDataName) { Value1Name = val1Name, Value1 = val1 };
+
+            var categoryEntities = await _context.Categories.Take(3).ToListAsync();
+
+            var categoryDtos = categoryEntities.Select(x => new CategoryLookupDto() { Id = x.Id }).ToList();
+
+            var command = new UpsertCategoryTypeCommand(name)
+            {
+                Description = desc,
+                Categories = categoryDtos,
+                AdditionalData = new List<AdditionalDataObject> { addData }
+            };
+
+            // Act
+            var resultId = await handler.Handle(command, CancellationToken.None);
+
+
+            // Assert
+            var actual = await _context.CategoryTypes.FirstOrDefaultAsync(x => x.Id == resultId);
+
+            actual.Should().NotBeNull();
+            actual.Name.Should().Be(name);
+            actual.Description.Should().Be(desc);
+            actual.AdditionalData.Should().Contain(addData);
+        }
+
+        [Test]
+
+        public async Task CreateCategoryHandle_GivenValidRequest_ShouldWork()
+        {
+            // Arrange
+            var handler = new CreateCategoryCommand.Handler(_context);
+
+            var name = "Test Category 12";
+            var desc = "Category 12 description";
+
+            var addDataName = "Test Data 222";
+            var val1Name = "Test Value 222";
+            var val1 = 222;
+
+            var addData = new AdditionalDataObject(addDataName) { Value1Name = val1Name, Value1 = val1 };
+
+            var categoryType = new CategoryType("Test Category Type 122");
+
+            _context.CategoryTypes.Add(categoryType);
+            await _context.SaveChangesAsync();
+
+            var catTypeId = categoryType.Id;
+
+            var catTypeDto = new CategoryTypeLookupDto() { Id = catTypeId };
+
+            var genOccs = _context.GenericOccurrences.Take(2).ToList();
+            var genOccsDtos = genOccs.Select(x => new GenericOccurrenceLookupDto { Id = x.Id }).ToList();
+
+
+            var command = new CreateCategoryCommand(name)
+            {
+                Description = desc,
+                AdditionalData = new List<AdditionalDataObject> { addData },
+                CategoryType = catTypeDto,
+                GenericOccurrences = genOccsDtos
+            };
+
+            // Act
+            var resultId = await handler.Handle(command, CancellationToken.None);
+
+
+
+            // Assert
+            var actual = await _context.Categories.FirstOrDefaultAsync(x => x.Id == resultId);
+
+            actual.Should().NotBeNull();
+            actual.AdditionalData.Should().Contain(addData);
+            actual.Name.Should().Be(name);
+            actual.Description.Should().Be(desc);
+            actual.CategoryType.Should().BeSameAs(categoryType);
+            actual.GenericOccurrences.Should().Contain(genOccs);
+        }
+
+        [Test]
+
+        public async Task UpsertRelationTypeHandle_GivenValidRequest_ShouldCreateNewEntity()
+        {
+            // Arrange
+            var handler = new UpsertRelationTypeCommand.Handler(_context);
+
+            var name = "Test Relation Type";
+            var desc = "Just a test rel type";
+
+            var addDataName = "Test Data 2111";
+            var val1Name = "Test Value 2111";
+            var val1 = 2111;
+
+            bool trans = true;
+
+            var mirroredType = new RelationType("Mirrored Test Relation");
+
+            _context.RelationTypes.Add(mirroredType);
+            await _context.SaveChangesAsync();
+            var mirroredTypeId = mirroredType.Id;
+
+            var mirroredTypeDto = new RelationTypeLookupDto { Id = mirroredTypeId };
+
+
+            var addData = new AdditionalDataObject(addDataName) { Value1Name = val1Name, Value1 = val1 };
+
+
+
+            var command = new UpsertRelationTypeCommand(name)
+            {
+                Description = desc,
+                Transitive = trans,
+                MirroredType = mirroredTypeDto,
+                AdditionalData = new List<AdditionalDataObject> { addData }
+            };
+
+            // Act
+            var resultId = await handler.Handle(command, CancellationToken.None);
+
+
+            // Assert
+            var actual = await _context.RelationTypes.FirstOrDefaultAsync(x => x.Id == resultId);
+
+            actual.Should().NotBeNull();
+            actual.Name.Should().Be(name);
+            actual.Description.Should().Be(desc);
+            actual.AdditionalData.Should().Contain(addData);
+            actual.Transitive.Should().Be(trans);
+            actual.MirroredType.Should().BeSameAs(mirroredType);
         }
 
     }

@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\RelationTypes\Upsert\" />
     <Folder Include="System\" />
   </ItemGroup>
 
