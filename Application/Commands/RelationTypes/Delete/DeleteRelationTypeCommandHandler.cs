@@ -5,18 +5,20 @@ using Rangen.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rangen.Application.Commands.Categories.DeleteCategory
+namespace Rangen.Application.Commands.RelationTypes.Delete
 {
-    public class DeleteCategoryCommandHandler : DeleteItemCommandHandler<Category>
+    public class DeleteRelationTypeCommandHandler : DeleteItemCommandHandler<RelationType>
     {
 
-        public DeleteCategoryCommandHandler(IRangenDbContext context) : base(context)
+        public DeleteRelationTypeCommandHandler(IRangenDbContext context) : base(context)
         {
         }
+
 
         public override async Task<Unit> Handle(DeleteItemCommand request, CancellationToken cancellationToken)
         {
-            return await Handle_Base(_context.Categories, request, cancellationToken);
+            return await Handle_Base(_context.RelationTypes, request, cancellationToken);
         }
     }
+
 }

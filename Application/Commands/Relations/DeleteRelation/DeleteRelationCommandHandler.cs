@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Rangen.Application.Common.Exceptions;
+using Rangen.Application.Commands.Common;
 using Rangen.Application.Common.Interfaces;
 using Rangen.Domain.Entities;
 using System.Threading;
@@ -7,29 +7,30 @@ using System.Threading.Tasks;
 
 namespace Rangen.Application.Commands.Relations.DeleteRelation
 {
-    class DeleteRelationCommandHandler : IRequestHandler<DeleteRelationCommand>
+    public class DeleteRelationCommandHandler : DeleteItemCommandHandler<Relation>
     {
-        private readonly IRangenDbContext _context;
 
-        public DeleteRelationCommandHandler(IRangenDbContext context)
+        public DeleteRelationCommandHandler(IRangenDbContext context) : base(context)
         {
-            _context = context;
         }
 
-        public async Task<Unit> Handle(DeleteRelationCommand request, CancellationToken cancellationToken)
+        public override async Task<Unit> Handle(DeleteItemCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _context.Relations
-                .FindAsync(request.Id);
+            var entity = await _context.Relations.FindAsync(request.Id);
 
-            _ = entity ?? throw new NotFoundException(nameof(Relation), request.Id);
+            if (entity?.Occurrence1?.RelationsAsOccurrence1?.Contains(entity) == true)
+                entity?.Occurrence1?.RelationsAsOccurrence1?.Remove(entity);
 
+            if (entity?.Occurrence1?.RelationsAsOccurrence2?.Contains(entity) == true)
+                entity?.Occurrence1?.RelationsAsOccurrence2?.Remove(entity);
 
-            _context.Relations.Remove(entity);
+            if (entity?.Occurrence2?.RelationsAsOccurrence1?.Contains(entity) == true)
+                entity?.Occurrence2?.RelationsAsOccurrence1?.Remove(entity);
 
-            await _context.SaveChangesAsync(cancellationToken);
+            if (entity?.Occurrence2?.RelationsAsOccurrence2?.Contains(entity) == true)
+                entity?.Occurrence2?.RelationsAsOccurrence2?.Remove(entity);
 
-            return Unit.Value;
+            return await Handle_Base(_context.Relations, request, cancellationToken);
         }
-
     }
 }

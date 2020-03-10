@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Rangen.Application.Common.Exceptions;
+using Rangen.Application.Commands.Common;
 using Rangen.Application.Common.Interfaces;
 using Rangen.Domain.Entities;
 using System.Threading;
@@ -7,29 +7,16 @@ using System.Threading.Tasks;
 
 namespace Rangen.Application.Commands.GenericOccurrences.DeleteGenericOccurrence
 {
-    class DeleteGenericOccurrenceCommandHandler : IRequestHandler<DeleteGenericOccurrenceCommand>
+    public class DeleteGenericOccurrenceCommandHandler : DeleteItemCommandHandler<GenericOccurrence>
     {
-        private readonly IRangenDbContext _context;
 
-        public DeleteGenericOccurrenceCommandHandler(IRangenDbContext context)
+        public DeleteGenericOccurrenceCommandHandler(IRangenDbContext context) : base(context)
         {
-            _context = context;
         }
 
-        public async Task<Unit> Handle(DeleteGenericOccurrenceCommand request, CancellationToken cancellationToken)
+        public override async Task<Unit> Handle(DeleteItemCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _context.GenericOccurrences
-                .FindAsync(request.Id);
-
-            _ = entity ?? throw new NotFoundException(nameof(GenericOccurrence), request.Id);
-
-
-            _context.GenericOccurrences.Remove(entity);
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
+            return await Handle_Base(_context.GenericOccurrences, request, cancellationToken);
         }
-
     }
 }
