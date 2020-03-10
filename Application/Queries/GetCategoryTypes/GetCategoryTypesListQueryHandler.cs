@@ -4,7 +4,7 @@ using Rangen.Application.Queries.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rangen.Application.Queries.GetCategoryTypesList
+namespace Rangen.Application.Queries.GetCategoryTypes
 {
     public class GetCategoryTypesListQueryHandler : GetItemListQueryHandler<CategoryTypeLookupDto>
     {

@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using Rangen.Application.Queries.GetCategoriesList;
-using Rangen.Application.Queries.GetCategoryTypesList;
+using Rangen.Application.Queries.GetCategories;
+using Rangen.Application.Queries.GetCategoryTypes;
 using Rangen.Application.Queries.GetGenericOccurrences;
 using Rangen.Application.Queries.GetRelations;
 using Rangen.Application.Queries.GetRelationTypes;

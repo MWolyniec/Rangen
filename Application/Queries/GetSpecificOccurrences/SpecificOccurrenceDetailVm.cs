@@ -22,8 +22,7 @@ namespace Rangen.Application.Queries.GetSpecificOccurrences
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<SpecificOccurrence, SpecificOccurrenceDetailVm>()
-                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id));
+            profile.CreateMap<SpecificOccurrence, SpecificOccurrenceDetailVm>();
         }
 
     }

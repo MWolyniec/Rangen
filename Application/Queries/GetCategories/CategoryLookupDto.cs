@@ -3,7 +3,7 @@ using Rangen.Application.Common.Mappings;
 using Rangen.Application.Queries.Common;
 using Rangen.Domain.Entities;
 
-namespace Rangen.Application.Queries.GetCategoriesList
+namespace Rangen.Application.Queries.GetCategories
 {
     public class CategoryLookupDto : ItemLookupDto, IMapFrom<Category>
     {

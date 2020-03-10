@@ -1,10 +1,11 @@
-﻿using Rangen.Application.Queries.Common;
+﻿using Rangen.Application.Common.Mappings;
+using Rangen.Application.Queries.Common;
 using Rangen.Application.Queries.GetRelationTypes;
-using Rangen.Domain.Common;
+using Rangen.Domain.Entities;
 
 namespace Rangen.Application.Queries.GetRelations
 {
-    public class RelationDetailViewModel
+    public class RelationDetailVm : ItemVm, IMapFrom<Relation>
     {
         public OccurrenceLookupDto Occurrence1 { get; set; }
 

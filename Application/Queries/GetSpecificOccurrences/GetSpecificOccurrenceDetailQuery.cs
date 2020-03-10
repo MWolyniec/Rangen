@@ -1,9 +1,8 @@
-﻿using MediatR;
+﻿using Rangen.Application.Queries.Common;
 
 namespace Rangen.Application.Queries.GetSpecificOccurrences
 {
-    public class GetSpecificOccurrenceDetailQuery : IRequest<SpecificOccurrenceDetailVm>
+    public class GetSpecificOccurrenceDetailQuery : GetItemDetailQuery<SpecificOccurrenceDetailVm>
     {
-        public int Id { get; set; }
     }
 }

@@ -78,7 +78,7 @@ namespace Rangen.Persistence
 
 
 
-            modelBuilder.Entity<Relation>().HasKey(sc => new { sc.Occurrence1Id, sc.Occurrence2Id });
+
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(RangenDbContext).Assembly);
         }
